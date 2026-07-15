@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SENE | Serviço Nacional de Educação</title>
+    <style>
+        /* RESET DE ESTILOS */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        /* PALETA DE CORES GERAL (Fundo Escuro) */
+        body {
+            background-color: #0b0f19; 
+            color: #ffffff; 
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        /* CONTAINER CENTRAL (Estilo Aplicativo Mobile) */
+        .hub-container {
+            width: 100%;
+            max-width: 450px;
+            background-color: #111827; 
+            border: 1px solid #1f2937;
+            border-radius: 24px;
+            padding-bottom: 32px;
+            text-align: center;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+            overflow: hidden; 
+        }
+
+        /* ESTRUTURA DE CABEÇALHO ESTILO FACEBOOK */
+        .facebook-header {
+            position: relative;
+            width: 100%;
+            height: 180px; 
+            margin-bottom: 60px; 
+        }
+
+        /* Imagem de Capa (Logo SENE) */
+        .capa-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            background-color: #1f2937; 
+        }
+
+        /* Foto de Perfil Redonda Sobreposta (Sua Foto) */
+        .perfil-container {
+            position: absolute;
+            bottom: -50px; 
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100px;
+            height: 100px;
+            background-color: #ffffff;
+            border: 4px solid #111827; 
+            border-radius: 50%;
+            overflow: hidden;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+        }
+
+        .perfil-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        /* TITULOS */
+        h1 {
+            font-size: 22px;
+            font-weight: 700;
+            margin-bottom: 16px; 
+            color: #ffffff;
+            padding: 0 24px;
+        }
+
+        /* CONTAINER PARA O BOTÃO QUEM SOMOS NO CABEÇALHO */
+        .header-action-container {
+            padding: 0 24px;
+            margin-bottom: 32px;
+        }
+
+        /* CONTEÚDO */
+        .content-body {
+            padding: 0 24px;
+        }
+
+        /* SEÇÕES EM BRANCO */
+        .card-secao {
+            background-color: #ffffff; 
+            border-radius: 16px;
+            padding: 20px;
+            margin-bottom: 20px;
+            text-align: left;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        }
+
+        /* CABEÇALHO INTERNO DOS CARDS (Título + Miniatura alinhados) */
+        .card-header-block {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 16px;
+            border-bottom: 2px solid #f3f4f6;
+            padding-bottom: 10px;
+        }
+
+        .miniatura-card {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 1px solid #d1d5db;
+            background-color: #f3f4f6;
+        }
+
+        /* Títulos dentro das seções brancas (Texto Escuro) */
+        .card-title {
+            font-size: 16px;
+            font-weight: 700;
+            color: #0b0f19; 
+        }
+
+        /* Centralizado apenas para a captura de e-mail */
+        .card-title-center {
+            width: 100%;
+            text-align: center;
+        }
+
+        /* ESTILO PADRÃO DOS BOTÕES DE AÇÃO */
+        .btn-link {
+            display: block;
+            width: 100%;
+            background-color: #4169e1; 
+            color: #ffffff;
+            text-align: center;
+            padding: 14px;
+            border-radius: 10px;
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 14px; 
+            box-shadow: 0 4px 10px rgba(65, 105, 225, 0.3);
+            transition: background-color 0.2s;
+            
+            /* Efeito de contorno preto de 1.5px */
+            text-shadow: 
+                -1.5px -1.5px 0 #000,  
+                 1.5px -1.5px 0 #000,
+                -1.5px  1.5px 0 #000,
+                 1.5px  1.5px 0 #000,
+                -1.5px  0px   0 #000,
+                 1.5px  0px   0 #000,
+                 0px   -1.5px 0 #000,
+                 0px    1.5px 0 #000;
+        }
+
+        /* CORREÇÃO DO ESPAÇAMENTO: Força os 3px em todos os botões do bloco, exceto no último elemento real */
+        .btn-colado {
+            margin-bottom: 3px !important; 
+        }
+
+        .card-secao .btn-link:last-of-type {
+            margin-bottom: 0 !important; 
+        }
+
+        /* INPUT DE EMAIL DENTRO DO CARD BRANCO */
+        .input-email {
+            width: 100%;
+            padding: 14px;
+            border-radius: 10px;
+            border: 1px solid #d1d5db;
+            background-color: #f9fafb;
+            color: #000000;
+            font-size: 14px;
+            margin-bottom: 12px;
+            outline: none;
+        }
+
+        .input-email:focus {
+            border-color: #4169e1;
+        }
+
+        .btn-submit {
+            width: 100%;
+            background-color: transparent;
+            border: 2px solid #4169e1; 
+            color: #4169e1;
+            padding: 12px;
+            border-radius: 10px;
+            font-weight: 700;
+            font-size: 14px;
+            cursor: pointer;
+        }
+
+        /* SEÇÃO DE REDES SOCIAIS */
+        .sub-redes {
+            margin-top: 12px;
+            padding-top: 8px;
+        }
+        
+        .redes-header-block {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 12px;
+        }
+
+        .miniatura-rede {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 1px solid #d1d5db;
+            background-color: #f3f4f6;
+        }
+
+        .sub-redes-titulo {
+            font-size: 12px;
+            font-weight: 700;
+            color: #4b5563;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        /* Grid de 4 botões para as redes */
+        .redes-links-container {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 8px;
+            margin-bottom: 16px;
+        }
+
+        .redes-links-container:last-child {
+            margin-bottom: 0;
+        }
+
+        .btn-rede {
+            background-color: #0b0f19;
+            color: #ffffff;
+            text-align: center;
+            padding: 10px 2px;
+            border-radius: 8px;
+            font-size: 11px;
+            font-weight: 600;
+            text-decoration: none;
+            white-space: nowrap;
+            transition: background-color 0.2s;
+        }
+
+        .btn-rede:hover {
+            background-color: #1f2937;
+        }
+
+        /* RODAPÉ */
+        .footer {
+            margin-top: 24px;
+            font-size: 11px;
+            color: #4b5563;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="hub-container">
+        
+        <!-- CABEÇALHO ESTILO FACEBOOK -->
+        <div class="facebook-header">
+            <!-- Imagem 2: Capa (Logo SENE) -->
+            <img class="capa-img" src="imagem1.jpg" alt="Capa SENE">
+            
+            <!-- Imagem 1: Perfil Redonda (Sua Foto) -->
+            <div class="perfil-container">
+                <img class="perfil-img" src="Imagem2.jpg" alt="Prof. William Queiroz">
+            </div>
+        </div>
+
+        <!-- Título principal -->
+        <h1>Bem-vindo(a) à SENE</h1>
+
+        <!-- Botão: Quem Somos com Link do YouTube Configurado -->
+        <div class="header-action-container">
+            <a href="https://youtu.be/YIFKSR-46wo?is=PMpBehNXk97dSfa6" class="btn-link" target="_blank">Quem Somos</a>
+        </div>
+
+        <!-- Corpo da página onde ficam os cards -->
+        <div class="content-body">
+
+            <!-- SEÇÃO 1: Prof. William Queiroz -->
+            <div class="card-secao">
+                <div class="card-header-block">
+                    <img class="miniatura-card" src="imagem3.jpg" alt="Show de Português">
+                    <div class="card-title">Prof. William Queiroz</div>
+                </div>
+                
+                <a href="https://professorwilliamqueiroz.vercel.app" class="btn-link btn-colado" target="_blank">Português Estratégico</a>
+                <a href="https://professorwilliamqueiroz.vercel.app" class="btn-link btn-colado" target="_blank">Mentoria Black Premium</a>
+                <a href="https://professorwilliamqueiroz.vercel.app" class="btn-link" target="_blank">Desafio de Gramática</a>
+            </div>
+
+            <!-- SEÇÃO 2: Manual da Maturidade -->
+            <div class="card-secao">
+                <div class="card-header-block">
+                    <img class="miniatura-card" src="imagem4.jpg" alt="Manual da Maturidade">
+                    <div class="card-title">Manual da Maturidade</div>
+                </div>
+                
+                <a href="https://manualdamaturidade.vercel.app" class="btn-link btn-colado" target="_blank">Supermente Absoluta</a>
+                <a href="https://manualdamaturidade.vercel.app" class="btn-link btn-colado" target="_blank">Manual do Amor</a>
+                <a href="https://manualdamaturidade.vercel.app" class="btn-link" target="_blank">Aconselhamento</a>
+            </div>
+
+            <!-- SEÇÃO 3: Captura de e-mails para Leads -->
+            <div class="card-secao">
+                <div class="card-header-block" style="justify-content: center;">
+                    <div class="card-title card-title-center">📩 Receba novidades por e-mail</div>
+                </div>
+                
+                <form action="#" method="POST" onsubmit="alert('E-mail cadastrado com sucesso!'); return false;">
+                    <input type="email" class="input-email" placeholder="Seu melhor e-mail..." required>
+                    <button type="submit" class="btn-submit">Quero me inscrever</button>
+                </form>
+            </div>
+
+            <!-- SEÇÃO 4: Seja meu Sócio -->
+            <div class="card-secao">
+                <div class="card-header-block">
+                    <img class="miniatura-card" src="imagem5.jpg" alt="Seja meu Sócio">
+                    <div class="card-title">Seja meu Sócio</div>
+                </div>
+                
+                <a href="https://professorwilliamqueiroz.vercel.app" class="btn-link" target="_blank">Maiores Informações</a>
+            </div>
+
+            <!-- SEÇÃO 5: Redes Sociais Atualizadas -->
+            <div class="card-secao">
+                <div class="card-header-block" style="justify-content: center;">
+                    <div class="card-title card-title-center">🌐 Nossas Redes Sociais</div>
+                </div>
+                
+                <!-- Bloco Show de Português -->
+                <div class="sub-redes">
+                    <div class="redes-header-block">
+                        <img class="miniatura-rede" src="imagem3.jpg" alt="Show de Português">
+                        <div class="sub-redes-titulo">Show de Português</div>
+                    </div>
+                    <div class="redes-links-container">
+                        <a href="https://www.facebook.com/share/1JhGHpy4NC/" class="btn-rede" target="_blank">Facebook</a>
+                        <a href="https://youtube.com/@professorwilliamqueiroz?si=gpb1o5kh3u-4QWnc" class="btn-rede" target="_blank">YouTube</a>
+                        <a href="https://www.tiktok.com/@showdeportugues?_r=1&_t=ZS-97vA7zsESR8" class="btn-rede" target="_blank">TikTok</a>
+                        <a href="https://www.instagram.com/showdeportugues?igsh=ejZsbTBkc2xkaG9z" class="btn-rede" target="_blank">Instagram</a>
+                    </div>
+                </div>
+
+                <!-- Bloco Manual da Maturidade -->
+                <div class="sub-redes">
+                    <div class="redes-header-block" style="margin-top: 20px; border-top: 1px solid #f3f4f6; padding-top: 16px;">
+                        <img class="miniatura-rede" src="imagem4.jpg" alt="Manual da Maturidade">
+                        <div class="sub-redes-titulo">Manual da Maturidade</div>
+                    </div>
+                    <div class="redes-links-container">
+                        <a href="https://www.facebook.com/share/1CwJVLefP1/" class="btn-rede" target="_blank">Facebook</a>
+                        <a href="https://youtube.com/@manualdamaturidade?si=aojp9-cQePujWn5b" class="btn-rede" target="_blank">YouTube</a>
+                        <a href="https://www.tiktok.com/@manualdamaturidade?_r=1&_t=ZS-97vAyt2cRlg" class="btn-rede" target="_blank">TikTok</a>
+                        <a href="https://www.instagram.com/manualdamaturidade?igsh=MWJ4aWF5MGk2eWZkNg%3D%3D" class="btn-rede" target="_blank">Instagram</a>
+                    </div>
+                </div>
+            </div>
+
+        </div> <!-- Fim do content-body -->
+
+        <div class="footer">
+            &copy; 2026 SENE. Todos os direitos reservados.
+        </div>
+
+    </div>
+
+</body>
+</html>
