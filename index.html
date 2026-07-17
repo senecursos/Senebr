@@ -4,6 +4,14 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SENE | Serviço Nacional de Educação</title>
+    
+    <!-- Configurações para PWA (Aplicativo) -->
+    <link rel="manifest" href="/manifest.json">
+    <meta name="theme-color" content="#0b0f19">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <link rel="apple-touch-icon" href="logo-sene.jpg"> <!-- Usa a sua foto de perfil como ícone padrão no iOS -->
+
     <style>
         /* RESET DE ESTILOS */
         * {
@@ -302,9 +310,9 @@
                     <div class="card-title">Prof. William Queiroz</div>
                 </div>
                 
-                <a href="https://professorwilliamqueiroz.vercel.app" class="btn-link btn-colado" target="_blank">Português Estratégico</a>
-                <a href="https://professorwilliamqueiroz.vercel.app" class="btn-link btn-colado" target="_blank">Mentoria Black Premium</a>
-                <a href="https://professorwilliamqueiroz.vercel.app" class="btn-link" target="_blank">Desafio de Gramática</a>
+                <a href="https://portugues.senebr.com.br/" class="btn-link btn-colado" target="_blank">Português Estratégico</a>
+                <a href="https://portugues.senebr.com.br/" class="btn-link btn-colado" target="_blank">Mentoria Black Premium</a>
+                <a href="https://portugues.senebr.com.br/" class="btn-link" target="_blank">Desafio de Gramática</a>
             </div>
 
             <!-- SEÇÃO 2: Manual da Maturidade -->
@@ -314,9 +322,9 @@
                     <div class="card-title">Manual da Maturidade</div>
                 </div>
                 
-                <a href="https://manualdamaturidade.vercel.app" class="btn-link btn-colado" target="_blank">Supermente Absoluta</a>
-                <a href="https://manualdamaturidade.vercel.app" class="btn-link btn-colado" target="_blank">Manual do Amor</a>
-                <a href="https://manualdamaturidade.vercel.app" class="btn-link" target="_blank">Aconselhamento</a>
+                <a href="https://maturidade.senebr.com.br/" class="btn-link btn-colado" target="_blank">Supermente Absoluta</a>
+                <a href="https://maturidade.senebr.com.br/" class="btn-link btn-colado" target="_blank">Manual do Amor</a>
+                <a href="https://maturidade.senebr.com.br/" class="btn-link" target="_blank">Aconselhamento</a>
             </div>
 
             <!-- SEÇÃO 3: Captura de e-mails para Leads -->
@@ -338,7 +346,7 @@
                     <div class="card-title">Seja meu Sócio</div>
                 </div>
                 
-                <a href="https://professorwilliamqueiroz.vercel.app" class="btn-link" target="_blank">Maiores Informações</a>
+                <a href="https://portugues.senebr.com.br/" class="btn-link" target="_blank">Maiores Informações</a>
             </div>
 
             <!-- SEÇÃO 5: Redes Sociais Atualizadas -->
@@ -383,6 +391,17 @@
         </div>
 
     </div>
+
+    <!-- Script para Registrar o Service Worker (Ativa o PWA) -->
+    <script>
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('/service-worker.js')
+                .then(reg => console.log('Service Worker registrado com sucesso!', reg))
+                .catch(err => console.error('Falha ao registrar o Service Worker:', err));
+            });
+        }
+    </script>
 
 </body>
 </html>
