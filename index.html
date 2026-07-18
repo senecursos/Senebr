@@ -151,6 +151,22 @@
                 -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;
         }
 
+        /* Ajuste para o botão com ícone */
+        .btn-with-icon {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .btn-icon {
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+
         .btn-colado {
             margin-bottom: 3px !important; 
         }
@@ -229,7 +245,10 @@
         <h1>Bem-vindo(a) à SENE</h1>
 
         <div class="header-action-container">
-            <a href="https://youtu.be/YIFKSR-46wo?is=PMpBehNXk97dSfa6" class="btn-link" target="_blank">Quem Somos</a>
+            <a href="https://youtu.be/YIFKSR-46wo?is=PMpBehNXk97dSfa6" class="btn-link btn-with-icon" target="_blank">
+                <img src="senebotao.jpg" alt="Icone" class="btn-icon">
+                Quem Somos
+            </a>
         </div>
 
         <div class="content-body">
