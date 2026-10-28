@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Validação de Certificados - SENE</title>
+  <style>
+    :root {
+      --primary: #003366;
+      --primary-dark: #002244;
+      --secondary: #28a745;
+      --danger: #dc3545;
+      --bg: #f4f6f9;
+      --card-bg: #ffffff;
+      --text: #333333;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    body {
+      background-color: var(--bg);
+      color: var(--text);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      min-height: 100vh;
+      padding: 15px;
+    }
+
+    header {
+      text-align: center;
+      margin-bottom: 25px;
+      margin-top: 15px;
+      width: 100%;
+    }
+
+    header h1 {
+      color: var(--primary);
+      font-size: 1.6rem;
+      margin-bottom: 5px;
+    }
+
+    header p {
+      color: #666;
+      font-size: 0.9rem;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 450px;
+      background: var(--card-bg);
+      padding: 20px;
+      border-radius: 12px;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+    }
+
+    .search-box {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin-bottom: 20px;
+      width: 100%;
+    }
+
+    .search-box label {
+      font-weight: 600;
+      font-size: 0.9rem;
+      color: var(--primary);
+    }
+
+    .input-group {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      width: 100%;
+    }
+
+    input[type="text"] {
+      width: 100%;
+      padding: 12px 15px;
+      border: 2px solid #e0e0e0;
+      border-radius: 8px;
+      font-size: 1rem;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+
+    input[type="text"]:focus {
+      border-color: var(--primary);
+    }
+
+    button {
+      width: 100%;
+      background-color: var(--primary);
+      color: white;
+      border: none;
+      padding: 13px;
+      border-radius: 8px;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background-color 0.2s;
+    }
+
+    button:hover {
+      background-color: var(--primary-dark);
+    }
+
+    .status-message {
+      display: none;
+      padding: 12px;
+      border-radius: 8px;
+      margin-bottom: 15px;
+      text-align: center;
+      font-weight: 600;
+      font-size: 0.9rem;
+      word-break: break-word;
+    }
+
+    .status-message.loading {
+      display: block;
+      background-color: #e9ecef;
+      color: #495057;
+    }
+
+    .status-message.success {
+      display: block;
+      background-color: #d4edda;
+      color: #155724;
+      border: 1px solid #c3e6cb;
+    }
+
+    .status-message.error {
+      display: block;
+      background-color: #f8d7da;
+      color: #721c24;
+      border: 1px solid #f5c6cb;
+    }
+
+    .result-card {
+      display: none;
+      border: 2px solid #e2e8f0;
+      border-radius: 10px;
+      padding: 15px;
+      background-color: #fafafa;
+    }
+
+    .result-card.active {
+      display: block;
+    }
+
+    .result-header {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 12px;
+      padding-bottom: 8px;
+      border-bottom: 1px solid #e0e0e0;
+    }
+
+    .badge-valid {
+      background-color: var(--secondary);
+      color: white;
+      padding: 4px 10px;
+      border-radius: 20px;
+      font-size: 0.75rem;
+      font-weight: bold;
+      text-transform: uppercase;
+    }
+
+    .field-group {
+      margin-bottom: 10px;
+    }
+
+    .field-group:last-child {
+      margin-bottom: 0;
+    }
+
+    .field-label {
+      font-size: 0.7rem;
+      text-transform: uppercase;
+      color: #777;
+      font-weight: 700;
+      letter-spacing: 0.5px;
+    }
+
+    .field-value {
+      font-size: 0.95rem;
+      font-weight: 600;
+      color: var(--text);
+      margin-top: 2px;
+      word-break: break-word;
+    }
+
+    footer {
+      margin-top: 25px;
+      font-size: 0.75rem;
+      color: #888;
+      text-align: center;
+      line-height: 1.4;
+    }
+  </style>
+
+  <!-- Firebase Web SDK -->
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+    import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyBsx5AduNRjauY9Ygr98FPzu6dOw89K6LU",
+      authDomain: "validacao-certificados-sene.firebaseapp.com",
+      projectId: "validacao-certificados-sene",
+      storageBucket: "validacao-certificados-sene.firebasestorage.app",
+      messagingSenderId: "186766586412",
+      appId: "1:186766586412:web:173642cd7d34d7e6a49789"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+
+    async function validarCPF(cpfInput) {
+      const statusDiv = document.getElementById('statusMessage');
+      const resultCard = document.getElementById('resultCard');
+
+      const cpfLimpo = cpfInput.replace(/\D/g, '');
+
+      if (!cpfLimpo || cpfLimpo.length !== 11) {
+        statusDiv.className = 'status-message error';
+        statusDiv.textContent = 'Por favor, informe um CPF válido com 11 dígitos.';
+        resultCard.classList.remove('active');
+        return;
+      }
+
+      statusDiv.className = 'status-message loading';
+      statusDiv.textContent = 'Consultando banco de dados...';
+      resultCard.classList.remove('active');
+
+      try {
+        const docRef = doc(db, "certificados", cpfLimpo);
+        const docSnap = await getDoc(docRef);
+
+        if (docSnap.exists()) {
+          const dados = docSnap.data();
+
+          // Mapeamento tolerante a variações de aluno, aluna e concludente
+          document.getElementById('valAluno').textContent = 
+            dados.aluno || dados.Aluno || dados.ALUNO || 
+            dados.aluna || dados.Aluna || dados.ALUNA || 
+            dados.concludente || dados.Concludente || dados.CONCLUDENTE || '-';
+
+          document.getElementById('valCurso').textContent = dados.curso || dados.Curso || dados.CURSO || '-';
+          document.getElementById('valCarga').textContent = dados.carga || dados.Carga || dados.CARGA || '-';
+          document.getElementById('valConclusao').textContent = dados.conclusao || dados.Conclusão || dados.CONCLUSAO || '-';
+          document.getElementById('valCodigo').textContent = dados.codigo || dados.Código || dados.CODIGO || '-';
+
+          statusDiv.className = 'status-message success';
+          statusDiv.textContent = 'Certificado Autêntico e Válido!';
+          resultCard.classList.add('active');
+        } else {
+          statusDiv.className = 'status-message error';
+          statusDiv.textContent = 'Nenhum certificado foi encontrado para o CPF informado.';
+          resultCard.classList.remove('active');
+        }
+      } catch (error) {
+        console.error("Erro ao buscar certificado:", error);
+        statusDiv.className = 'status-message error';
+        statusDiv.textContent = 'Ocorreu um erro ao consultar o banco de dados. Tente novamente.';
+        resultCard.classList.remove('active');
+      }
+    }
+
+    window.addEventListener('DOMContentLoaded', () => {
+      const btnValidar = document.getElementById('btnValidar');
+      const inputCPF = document.getElementById('inputCPF');
+
+      btnValidar.addEventListener('click', () => {
+        validarCPF(inputCPF.value);
+      });
+
+      inputCPF.addEventListener('keypress', (e) => {
+        if (e.key === 'Enter') {
+          validarCPF(inputCPF.value);
+        }
+      });
+
+      const urlParams = new URLSearchParams(window.location.search);
+      const cpfUrl = urlParams.get('cpf');
+      if (cpfUrl) {
+        inputCPF.value = cpfUrl;
+        validarCPF(cpfUrl);
+      }
+    });
+  </script>
+</head>
+<body>
+
+  <header>
+    <img src="logo-sene.jpg" alt="Logo" style="max-width: 150px; margin-bottom: 10px;">
+    <h1>Portal de Validação SENE</h1>
+    <p>Autenticidade de Certificados</p>
+  </header>
+
+  <div class="container">
+    <div class="search-box">
+      <label for="inputCPF">Informe o CPF:</label>
+      <div class="input-group">
+        <input type="text" id="inputCPF" placeholder="Digite o CPF (somente números)..." maxlength="14">
+        <button id="btnValidar">Validar</button>
+      </div>
+    </div>
+
+    <div id="statusMessage" class="status-message"></div>
+
+    <div id="resultCard" class="result-card">
+      <div class="result-header">
+        <span class="badge-valid">Autêntico</span>
+      </div>
+
+      <div class="field-group">
+        <div class="field-label">Concludente</div>
+        <div class="field-value" id="valAluno">-</div>
+      </div>
+
+      <div class="field-group">
+        <div class="field-label">Curso</div>
+        <div class="field-value" id="valCurso">-</div>
+      </div>
+
+      <div class="field-group">
+        <div class="field-label">Carga Horária</div>
+        <div class="field-value" id="valCarga">-</div>
+      </div>
+
+      <div class="field-group">
+        <div class="field-label">Data de Conclusão</div>
+        <div class="field-value" id="valConclusao">-</div>
+      </div>
+
+      <div class="field-group">
+        <div class="field-label">Código da Turma / Registro</div>
+        <div class="field-value" id="valCodigo">-</div>
+      </div>
+    </div>
+  </div>
+
+  <footer>
+    &copy; 2026 SENE - Serviço Nacional de Educação. Todos os direitos reservados.
+  </footer>
+
+</body>
+</html>
